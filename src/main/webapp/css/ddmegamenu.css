@@ -1,0 +1,32 @@
+.solidblockmenu{
+margin: 2px;
+float: left;
+font: bold 10px Arial;
+width: 950px;
+overflow: hidden;
+}
+
+.solidblockmenu li{
+display: inline;
+}
+
+
+.solidblockmenu li a{
+float: left;
+color: white;
+font-size:11px;
+padding: 9px 11px;
+text-decoration: none;
+border-right: 1px solid white;
+width:80px;
+text-align:center;
+}
+
+.solidblockmenu li a:visited{
+color: white;
+}
+
+.solidblockmenu li a:hover, .solidblockmenu li a.selected{ 
+color: white;
+background: transparent url(blockactive.gif) center center repeat-x;
+}

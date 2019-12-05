@@ -1,0 +1,561 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+    "http://struts.apache.org/dtds/struts-2.1.7.dtd">
+
+<struts>
+
+
+
+
+	<constant name="struts.devMode" value="false" />
+	<constant name="struts.ui.theme" value="extended_simple" ></constant>
+	<package name="default" extends="struts-default">
+
+		<interceptors>
+		<interceptor name="memberLoginValidate" class="com.sparity.shoppingcart.util.AuthenticationInterceptor" />
+			<interceptor-stack name="appDefaultStack">
+				<interceptor-ref name="defaultStack">
+					<param name="exception.logEnabled">true</param>
+					<param name="exception.logLevel">ERROR</param>
+				</interceptor-ref>
+			</interceptor-stack>
+			
+				<interceptor-stack name="validateUserStack">
+					<interceptor-ref name="appDefaultStack"/>
+					<interceptor-ref name="memberLoginValidate"/>
+				</interceptor-stack>
+		</interceptors>
+
+		<default-interceptor-ref name="appDefaultStack" />
+
+		<global-results>
+			<result name="error">jsp/error.jsp</result>
+			<result name="user-login" type="redirectAction">
+				<param name="actionName">Signin</param>
+			</result>
+		</global-results>
+
+		<global-exception-mappings>
+			<exception-mapping exception="java.lang.Exception"
+				result="error" />
+		</global-exception-mappings>
+
+		
+		 <action name="deleteproduct"
+			class="com.sparity.shoppingcart.action.ProductSaveAction" method="adminmrpofferpricedelete">
+		   <result name="success">jsp/admindetailssuccess.jsp</result>
+		</action>
+		
+				<action name="ProductGrid"
+			class="com.sparity.shoppingcart.action.ProductSaveAction" method="productList">
+		   <result name="success">jsp/GridView.jsp</result>
+		</action>
+    
+    <action name="addProdToWishList" class="com.sparity.shoppingcart.action.WhishListAction" method="addProdToWishList">
+			<result name="success">jsp/wishlist.jsp</result>
+			<result name="input" type="redirectAction">
+				<param name="actionName">productSpec</param>
+				<param name="imageId">${imageId}</param>
+				<param name="prodId">${cartProdId}</param>
+			</result>
+			<result name="login">jsp/login.jsp</result>
+		</action>
+		
+		
+	
+		<action name="productSpec"
+			class="com.sparity.shoppingcart.action.HomePageAction" method="productSpec">
+			<result name="success">jsp/overview.jsp</result>
+		</action>
+		
+		<!-- Shopping Cart -->
+		<action name="showCart" class="com.sparity.shoppingcart.action.ShoppingCartAction" method="showCart">
+			<interceptor-ref name="validateUserStack" />
+			<result name="success">jsp/cart.jsp</result>
+		</action>
+		
+		<action name="addCart" class="com.sparity.shoppingcart.action.ShoppingCartAction" method="addToCart1">
+			<interceptor-ref name="validateUserStack" />
+			<result name="success">jsp/cart.jsp</result>
+		</action>
+		
+		<action name="removeCart" class="com.sparity.shoppingcart.action.ShoppingCartAction" method="removeCart">
+			<interceptor-ref name="validateUserStack" />
+			<result name="success">jsp/cart.jsp</result>
+		</action>
+
+		<action name="updateQty" class="com.sparity.shoppingcart.action.ShoppingCartAction" method="updateQuantity">
+			<interceptor-ref name="validateUserStack" />
+			<result name="success">jsp/cart.jsp</result>
+		</action>
+		
+		<!-- End Of Shopping Cart -->
+		
+		<!-- WhishLists -->
+		<action name="showWhishList" class="com.sparity.shoppingcart.action.WhishListAction" method="showWhishList">
+		<interceptor-ref name="validateUserStack" />
+			<result name="">jsp/wishlist.jsp</result>
+		</action>
+		
+		<action name="addWhishList" class="com.sparity.shoppingcart.action.WhishListAction" method="addCartProdToWhishList1">
+			<result name="">jsp/wishlist.jsp</result>
+		</action>
+		
+		<action name="moveToCart" class="com.sparity.shoppingcart.action.WhishListAction" method="moveProdToCart">
+			<result name="">jsp/wishlist.jsp</result>
+		</action>
+		
+		<action name="removeFromWhishList" class="com.sparity.shoppingcart.action.WhishListAction" method="removeProdFromWhishList">
+			<result name="">jsp/wishlist.jsp</result>
+		</action>
+		
+		
+		
+		<!--End Of WhishLists  -->
+		
+		<!-- User -->
+		<action name="showLogin" class="com.sparity.shoppingcart.action.UserAccountAction" method="showLoginPage">
+			<result name="">jsp/login.jsp</result>
+		</action>
+		
+		 <action name="CheckuserAccountAction" class="com.sparity.shoppingcart.action.UserAccountAction"  method="authenticateUser">
+                 <result name="success">jsp/Welcome.jsp</result>
+                 <result name="error">jsp/login.jsp</result>
+                 <result name="input">jsp/login.jsp</result>
+	     </action>
+
+         <action name="addUserInfo" class="com.sparity.shoppingcart.action.UserAccountAction"  method="addUser">	              
+	             <result name="success">jsp/Welcome.jsp</result>
+	             <result name="error">jsp/login.jsp</result>
+	     </action>
+	     
+	     <!--End Of User  -->
+	     
+	     <!-- Products -->
+	     <action name="showBrandProds" class="com.sparity.shoppingcart.action.ProductsAction"  method="showBrandCategoryProducts">	              
+	             <result name="success">jsp/brandProducts.jsp</result>
+	     </action>
+	     
+	     <action name="showBrandCategoryGridProds" class="com.sparity.shoppingcart.action.ProductsAction"  method="showBrandCategoryProducts">	              
+	             <result name="success">jsp/brandprodGridView.jsp</result>
+	     </action>
+	     
+	     <action name="showAllCategoryProducts" class="com.sparity.shoppingcart.action.ProductsAction"  method="showAllCategoryProducts">	              
+	             <result name="success">jsp/categoryProducts.jsp</result>
+	     </action>
+	     
+	     <action name="showAllGridProducts" class="com.sparity.shoppingcart.action.ProductsAction"  method="showAllCategoryProducts">	              
+	             <result name="success">jsp/categoryProdsGridview.jsp</result>
+	     </action>
+	     
+	     <action name="showAllProducttypes" class="com.sparity.shoppingcart.action.ProductsAction"  method="showProductTypes">	              
+	             <result name="success">jsp/productTypes.jsp</result>
+	     </action>
+	     
+	     <action name="showAllGridProducttypes" class="com.sparity.shoppingcart.action.ProductsAction"  method="showProductTypes">	              
+	             <result name="success">jsp/productTypesGridView.jsp</result>
+	     </action>
+	     
+	     
+	     <action name="categoryProd" class="com.sparity.shoppingcart.action.ProductsAction"  method="getCategoryList">	              
+	             <result name="success">jsp/allmobiles.jsp</result>
+	     </action>
+	    
+	    <action name="SpecificBrandList" class="com.sparity.shoppingcart.action.ProductsAction"  method="showSpeicifcBrandProds">	              
+	             <result name="success">jsp/brandProducts.jsp</result>
+	     </action> 
+	
+	      <action name="SpecificProductList" class="com.sparity.shoppingcart.action.ProductsAction"  method="showSpeicificProductTypes">	              
+	             <result name="success">jsp/allmobiles.jsp</result>
+	     </action>
+	     
+	      <action name="SpecificProductIdBrandId" class="com.sparity.shoppingcart.action.ProductsAction"  method="showSpeicificProductTypeswithBrandId">	              
+	             <result name="success">jsp/brandProducts.jsp</result>
+	     </action>
+	     
+	     <action name="selectedBrandProds" class="com.sparity.shoppingcart.action.ProductsAction"  method="filterProds">	              
+	             <result name="success">jsp/brandProducts.jsp</result>
+	       </action>
+	       
+	   <!-- End Of Products -->
+	   
+	   <action name="productSpec"
+			class="com.sparity.shoppingcart.action.HomePageAction" method="productSpec">
+			<result name="success">jsp/overview.jsp</result>
+		</action>
+		
+		<!--Filtering based on catId,BrandId and ProdTypeId  -->
+		
+		 <action name="filterByBrands" class="com.sparity.shoppingcart.action.ProductsAction"  method="filterProds">	              
+	             <result name="success">jsp/showBrands.jsp</result>
+	     </action>
+	     
+	     <!--Filter based On Brand  -->
+	     <action name="filterProdBrands" class="com.sparity.shoppingcart.action.ProductsAction"  method="filterProdsByProdTypes">	              
+	             <result name="success">jsp/brandFilterProducts.jsp</result>
+	             <result name="input" type="redirectAction">
+	             	<param name="actionName">showBrandProds</param>
+					<param name="categoryId">${pageCategoryId}</param>
+					<param name="brandId">${pagebrandId}</param>
+				 </result>
+	     </action>
+	     
+	     <action name="filterProdBrandsGridView" class="com.sparity.shoppingcart.action.ProductsAction"  method="filterProdsByProdTypes">	              
+	             <result name="success">jsp/brandFilterprodGridView.jsp</result>
+	             <result name="input" type="redirectAction">
+	             	<param name="actionName">showBrandCategoryGridProds</param>
+					<param name="categoryId">${pageCategoryId}</param>
+					<param name="brandId">${pagebrandId}</param>
+				 </result>
+	     </action>
+	     
+	     <!--Filter based On ProductType  -->
+	     
+	     <action name="filterProdsProdType" class="com.sparity.shoppingcart.action.ProductsAction"  method="filterProdsByBrands">	              
+	             <result name="success">jsp/productFilterTypes.jsp</result>
+	             <result name="input" type="redirectAction">
+	             	<param name="actionName">showAllProducttypes</param>
+					<param name="prodTypeId">${pageProdTypeId}</param>
+				 </result>
+	     </action>
+	     
+	     <action name="filterProdsProdTypeGridView" class="com.sparity.shoppingcart.action.ProductsAction"  method="filterProdsByBrands">	              
+	             <result name="success">jsp/productFilterTypesGridView.jsp</result>
+	             <result name="input" type="redirectAction">
+	             	<param name="actionName">showAllGridProducttypes</param>
+					<param name="prodTypeId">${pageProdTypeId}</param>
+				 </result>
+	     </action>
+	     
+	     <!--Filter based On Category -->
+	     
+	     <action name="filterCategoryProds" class="com.sparity.shoppingcart.action.ProductsAction"  method="filterCategoryProds">	              
+	             <result name="success">jsp/categoryFilterProducts.jsp</result>
+	             <result name="input" type="redirectAction">
+	             	<param name="actionName">showAllCategoryProducts</param>
+					<param name="categoryId">${pageCategoryId}</param>
+				 </result>
+	     </action>
+	     
+	     <action name="filterCategoryProdsGridView" class="com.sparity.shoppingcart.action.ProductsAction"  method="filterCategoryProds">	              
+	             <result name="success">jsp/categoryProdsFilterGridview.jsp</result>
+	             <result name="input" type="redirectAction">
+	             	<param name="actionName">showAllGridProducts</param>
+					<param name="categoryId">${pageCategoryId}</param>
+				 </result>
+	     </action>
+	     
+<!-- 	      <action name="filterProdBrandsGridView" class="com.sparity.shoppingcart.action.ProductsAction"  method="filterProds">	               -->
+<!-- 	             <result name="success">jsp/mobileGridview.jsp</result> -->
+<!-- 	     </action> -->
+	     
+	     <!--end of filters  -->
+	
+	      <!--  login -->
+	     <action name="Signin" 
+                class="com.sparity.shoppingcart.action.UserAccountAction"  method="Signin">
+                
+                <result name="success">jsp/login.jsp</result>
+         </action>
+      <action name="Signin1" 
+                class="com.sparity.shoppingcart.action.UserAccountAction"  method="Signin1">
+                
+                <result name="success" type="redirect">${redirectUrl}</result>
+                
+                
+                
+                 </action>
+     
+         <action name="SignOut"  
+                  class="com.sparity.shoppingcart.action.UserAccountAction"  method="SignOut">
+                  <result name="success" type="redirectAction">
+                     <param name="actionName">showHomePage</param>
+                   </result>
+          </action>           
+                     
+         <action name="myaccount"
+                class="com.sparity.shoppingcart.action.UserAccountAction"  method="MyAccount">
+             <result name="success">jsp/Myaccount.jsp</result> 
+         </action>    
+      
+         
+        
+          <action name="cancel" 
+                 class="com.sparity.shoppingcart.action.UserAccountAction"  method="Cancel">
+                 <result name="success">jsp/Myaccount.jsp</result>
+                 </action>
+         
+ <!--        
+         <action name="ValidateuserAccountAction"
+                 class="com.sparity.shoppingcart.action.UserAccountAction"  method="validateUserAccount">
+                 <result name="success" type="redirectAction">
+                     
+                   <param name="actionName">%{#session.lastAction}</param>  
+                  
+                    <param name="imageId">${impagePath}</param>
+				    <param name="prodId">${productId}</param>
+				     <param name="cartProdId">${cartProdId}</param>
+				    
+               
+            </result>  
+                 <result name="error">jsp/login.jsp</result>
+	       </action> -->
+	       
+	          <action name="ValidateuserAccountAction"
+                 class="com.sparity.shoppingcart.action.UserAccountAction"  method="validateUserAccount">
+                <result name="success" type="redirect">${redirectUrl}</result>
+                 <result name="error">jsp/login.jsp</result>
+	       </action>
+
+         <action name="SaveUserDetails"
+	              class="com.sparity.shoppingcart.action.UserAccountAction"  method="SaveUserDetails">	              
+	             <result name="success">jsp/Myaccount.jsp</result>
+	               <result name="error">jsp/login.jsp</result>
+	              </action>
+        
+         
+        <action name="changepassword" 
+                class="com.sparity.shoppingcart.action.UserAccountAction"  method="MyAcount">
+                <result name="success">jsp/ChangePassword.jsp</result> 
+        </action>
+
+       <action name="ChangePasswordmethod"
+               class="com.sparity.shoppingcart.action.UserAccountAction"  method="ChangePassword">
+               <result name="success">jsp/ChangePassword.jsp</result>
+               <result name="error">jsp/ChangePassword.jsp </result>
+               </action>
+
+
+        
+
+       <action name="forgotPassword"
+                class="com.sparity.shoppingcart.action.UserAccountAction"  method="forgotPassword">
+               <result name="error">jsp/login.jsp</result>
+               <result name="success">jsp/login.jsp</result> 
+       </action>
+       
+       
+       
+       
+       
+	     <!-- end of login  -->
+	     
+	    <action name="personaldetails"
+	            class="com.sparity.shoppingcart.action.PersonalDetailsAction" method="PersonalDetails">
+	            <result name="success">jsp/personaldetails.jsp</result>
+	            <result name="input">jsp/login.jsp</result>
+	            </action>
+	     
+	     
+	   <!--   <action name="savepersonaldetails"
+	            class="com.sparity.shoppingcart.action.PersonalDetailsAction" method="SavePersonalDetails">
+	            <result name="success">jsp/personaldetails.jsp</result>
+	            <result name="error">jsp/personaldetails.jsp</result>
+	            </action>
+	     -->
+	     
+	   <action name="orderHistory"
+             class="com.sparity.shoppingcart.action.UserAccountAction" method="OrderHistory">
+             <result name="success">jsp/orderHistory.jsp</result>
+             <result name="error">jsp/orderHistory.jsp </result>
+             </action>
+       
+       
+       
+       
+	     <!-- end of login  -->
+     
+		
+		
+		<action name="aboutUs">
+			<result>jsp/aboutUs.jsp</result>
+		</action>
+		
+		
+		<action name="contactUs">
+			<result>jsp/contactUs.jsp</result>
+		</action>
+		
+		  <action name="compare"
+			class="com.sparity.shoppingcart.action.ProductSaveAction" method="testcompare">
+		   <result name="success">jsp/comparision.jsp</result>
+		   <result name="error">jsp/errormessage.jsp</result>
+		   <result name="input">jsp/brandProducts.jsp</result>
+		   
+		   
+		    
+		</action>
+		   <action name="compare1"
+			class="com.sparity.shoppingcart.action.ProductSaveAction" method="testcompare1">
+		  <result name="success">jsp/compareSuccess.jsp</result>
+		  <result name="input">jsp/prodcompareError.jsp</result>
+		 
+		</action>
+		<action name="compareunchecked"
+			class="com.sparity.shoppingcart.action.ProductSaveAction" method="testcompareunchecked">
+		   <result name="success">jsp/brandProducts.jsp</result>
+		  
+		</action>
+		<!-- Metrics actions -->
+		
+		<action name="savePrjctDetails"
+			class="com.sparity.shoppingcart.action.ProjectCreationAction" method="saveProjectDetails">
+		   <result name="success">jsp/projectcreation.jsp</result>
+		  
+		</action>
+		
+		<action name="CreatePrjctAction">
+			<result>jsp/projectcreation.jsp</result>
+		</action>
+		
+		<action name="editProjectDetailsPage">
+			<result>jsp/editProjectDetails.jsp</result>
+		</action>
+		
+		
+		<action name="enterEffortsAction"
+			class="com.sparity.shoppingcart.action.EffortTrackingAction" method="getAllProjects">
+			<result name="success">jsp/EnterEfforts.jsp</result>
+		</action>
+		
+		<action name="SelectTypeOfUser"
+			class="com.sparity.shoppingcart.action.ProjectCreationAction" method="adminOrNormalUser">
+			<result name="success">jsp/AdminUserLoggedIn.jsp</result>
+		  <result name="input" type="redirectAction">
+				<param name="actionName">enterEffortsAction</param>
+			</result>
+		</action>
+		
+		<action name="usersList"
+			class="com.sparity.shoppingcart.action.ProjectCreationAction" method="retrieveAllUsers">
+		   <result name="success">jsp/Login.jsp</result>
+		  
+		</action>
+		
+		
+		<action name="updatePrjctDetails"
+			class="com.sparity.shoppingcart.action.ProjectCreationAction" method="updateProjectDetails">
+		   <result name="success">jsp/editProjectDetails.jsp</result>
+		  
+		</action>
+		
+		
+		<action name="GetProjectNamesAction"
+			class="com.sparity.shoppingcart.action.ProjectCreationAction" method="getProjectNames">
+		   <result name="success">jsp/ProjectNamesDIV.jsp</result>
+		  
+		</action>
+		
+		
+		<action name="saveEfforts"
+			class="com.sparity.shoppingcart.action.EffortTrackingAction" method="saveEffortDetails">
+		   <result name="success">jsp/EnterEfforts.jsp</result>
+		     <result name="input">jsp/EnterEfforts.jsp</result>
+		  
+		</action>
+		
+			<action name="getProjectsBasedOnDate"
+			class="com.sparity.shoppingcart.action.EffortTrackingAction" method="getProjectNamesBasedonDate">
+		   <result name="success">jsp/ProjectBasedonDate.jsp</result>
+		  
+		</action>
+			<action name="EditEffortsAction">
+			<result>jsp/EditEfforts.jsp</result>
+		</action>
+		
+		<action name="showEffortsForEditing"
+			class="com.sparity.shoppingcart.action.EffortTrackingAction" method="getProjectDetailsBasedOnEffortID">
+		   <result name="success">jsp/ShowEfforts.jsp</result>
+		  
+		</action>
+		
+		<action name="updateEffortsAction"
+			class="com.sparity.shoppingcart.action.EffortTrackingAction" method="updateEffortDetails">
+		   <result name="success">jsp/ShowEfforts.jsp</result>
+		  
+		</action>
+	
+		<!-- Metrics actions -->
+		
+		
+		
+		
+
+	</package>
+	
+<!-- 	<package name="fileUploadPackage" extends="struts-default">
+		<interceptors>
+			<interceptor-stack name="fileUploadStack">
+				<interceptor-ref name="exception" />
+				<interceptor-ref name="alias" />
+				<interceptor-ref name="servletConfig" />
+				<interceptor-ref name="prepare" />
+				<interceptor-ref name="i18n" />
+				<interceptor-ref name="chain" />
+				<interceptor-ref name="debugging" />
+				<interceptor-ref name="profiling" />
+				<interceptor-ref name="scopedModelDriven" />
+				<interceptor-ref name="modelDriven" />
+				<interceptor-ref name="fileUpload">
+					<param name="maximumSize">1024000</param>
+					<param name="allowedTypes">image/jpeg,image/gif,image/png</param>
+				</interceptor-ref>
+				<interceptor-ref name="checkbox" />
+				<interceptor-ref name="staticParams" />
+				<interceptor-ref name="actionMappingParams" />
+				<interceptor-ref name="params">
+					<param name="excludeParams">dojo\..*,^struts\..*</param>
+				</interceptor-ref>
+				<interceptor-ref name="conversionError" />
+				<interceptor-ref name="validation">
+					<param name="excludeMethods">input,back,cancel,browse</param>
+				</interceptor-ref>
+				<interceptor-ref name="workflow">
+					<param name="excludeMethods">input,back,cancel,browse</param>
+				</interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+
+	
+		
+		<action name="fileUpload" class="com.sparity.shoppingcart.action.UserAccountAction" method="fileUploadMethod">
+		<interceptor-ref name="fileUploadStack" />
+		<result name="success">jsp/fileupload1.jsp</result>
+		 </action>
+		 
+		 	<action name="myimages" class="com.sparity.shoppingcart.action.UserAccountAction" method="showMyAlbumImages">
+		<interceptor-ref name="fileUploadStack" />
+		<result name="success">jsp/myalbumimages.jsp</result>
+		<result name="login">jsp/login.jsp</result>
+		 </action>
+		 
+		<action name="fileUploadSuccess" class="com.sparity.shoppingcart.action.UserAccountAction" method="fileUploadSuccess">
+		<interceptor-ref name="fileUploadStack" />
+		<result name="success">jsp/myalbumimages.jsp</result>
+		</action>
+		 
+		  <action name="deleteimage" class="com.sparity.shoppingcart.action.UserAccountAction" method="deleteImage">
+		<interceptor-ref name="fileUploadStack" />
+		<result name="success">jsp/myalbumimages.jsp</result>
+		 </action>
+		 
+	
+		 <action name="showHomePage">
+		
+		<result name="success">jsp/footer.jsp</result>
+		 </action>
+		
+		 <action name="savepersonaldetails" class="com.sparity.shoppingcart.action.FriendsDetailsAction" method="saveFriendDetails">
+		
+		<result name="success">jsp/contactUs.jsp</result>
+		 </action>
+		
+
+		 
+		 
+	</package>
+
+<include file="admin-struts.xml"/> -->
+
+</struts>

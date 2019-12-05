@@ -1,0 +1,99 @@
+
+
+#slides1a {
+	overflow: hidden;
+	height: 237px;
+	padding-left:5px;
+	padding-top:5px;
+}
+
+#slides1a li {
+	list-style: none;
+	width: 950px;
+}
+#slides2a {
+	overflow: hidden;
+	height: 237px;
+	padding-left:5px;
+	padding-top:5px;
+}
+
+#slides2a li {
+	list-style: none;
+	width: 950px;
+}
+.box{width:232px; height:227px; background-color:#FFF; border:1px solid #CCC; margin-left:1px; float:left}
+
+.slides1_wrap .prev {
+	position: absolute;
+	right: 30px;
+	top: 5px;
+	outline: 0;
+}
+
+.slides1_wrap .next {
+	position: absolute;
+	right: 0px;
+	top: 5px;
+	outline: 0;
+}
+
+.slides1_wrap a:active {
+	top: 6px;
+}
+
+
+.slides2_wrap .prev {
+	position: absolute;
+	right: 30px;
+	top: 280px;
+	outline: 0;
+}
+
+.slides2_wrap .next {
+	position: absolute;
+	right: 0px;
+	top: 280px;
+	outline: 0;
+}
+
+.slides2_wrap a:active {
+	top: 281px;
+}
+
+.slides3_wrap .prev {
+	position: absolute;
+	right: 30px;
+	top: 550px;
+	outline: 0;
+}
+
+.slides3_wrap .next {
+	position: absolute;
+	right: 0px;
+	top: 550px;
+	outline: 0;
+}
+
+.slides3_wrap a:active {
+	top: 551px;
+}
+
+.slides4_wrap .prev {
+	position: absolute;
+	right: 30px;
+	top: 820px;
+	outline: 0;
+}
+
+.slides4_wrap .next {
+	position: absolute;
+	right: 0px;
+	top: 820px;
+	outline: 0;
+}
+
+.slides4_wrap a:active {
+	top: 821px;
+}
+

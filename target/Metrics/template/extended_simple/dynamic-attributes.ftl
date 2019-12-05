@@ -1,0 +1,1 @@
+<#include "/${parameters.templateDir}/simple/dynamic-attributes.ftl" />

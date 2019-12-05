@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+    "http://struts.apache.org/dtds/struts-2.1.7.dtd">
+
+<struts>
+ 
+<package name="adminpack" namespace="/admin" extends="default">
+
+
+<interceptors>
+		<interceptor name="memberLoginValidate" class="com.sparity.shoppingcart.util.AuthenticationInterceptorAdmin" />
+			<interceptor-stack name="appDefaultStack">
+				<interceptor-ref name="defaultStack">
+					<param name="exception.logEnabled">true</param>
+					<param name="exception.logLevel">ERROR</param>
+				</interceptor-ref>
+			</interceptor-stack>
+			
+				<interceptor-stack name="validateUserStack">
+					<interceptor-ref name="appDefaultStack"/>
+					<interceptor-ref name="memberLoginValidate"/>
+				</interceptor-stack>
+		</interceptors>
+
+		<default-interceptor-ref name="appDefaultStack" />
+
+		<global-results>
+			<result name="error">adminerror.jsp</result>
+			<result name="admin-login" type="redirectAction">
+				<param name="actionName">AdminLogin</param>
+			</result>
+		</global-results>
+
+		<global-exception-mappings>
+			<exception-mapping exception="java.lang.Exception"
+				result="error" />
+		</global-exception-mappings>
+
+
+
+	<action name="AdminLogin">
+		<result>adminlogin.jsp</result>
+	</action>
+	
+	 
+	 
+	 <action name="adminProductList" class="com.sparity.shoppingcart.action.AdminAction" method="showHomePage">
+	 	<interceptor-ref name="validateUserStack" />
+			<result name="success">productList.jsp</result>
+		</action>
+			
+		 
+		
+		  <action name="showAllGridProducts" class="com.sparity.shoppingcart.action.AdminAction"  method="showAllCategoryProducts">	              
+	             <result name="success">productListAfterSelectingCategory.jsp</result>
+	     </action>
+	     
+	       <action name="adminaction"
+			class="com.sparity.shoppingcart.action.AdminAction" method="adminmrpofferprice">
+		   <result name="success">productListAfterSelectingCategory.jsp</result>
+		    <result name="error">detailsnotsaved.jsp</result>
+		</action>
+	 <action name="deleteproduct"
+			class="com.sparity.shoppingcart.action.AdminAction" method="adminmrpofferpricedelete">
+		   <result name="success">productListAfterSelectingCategory.jsp</result>
+		    <result name="error">productnotdeleted.jsp</result>
+	</action>
+	
+	
+	
+	     <action name="signin"  
+	          class="com.sparity.shoppingcart.action.AdminAction" method="Signin">
+	          <result name="success">productList.jsp </result>
+	           <result name="error">adminlogin.jsp </result>
+	          </action>
+	 
+	 
+	 
+	     <action name="myaccount"
+	             class="com.sparity.shoppingcart.action.AdminAction" method="Myaccount">
+	             <result name="success">adminaccount.jsp</result>
+	             </action>
+	    
+	    
+	    
+	        
+	        <action  name="changepassword"  
+	        	     class="com.sparity.shoppingcart.action.AdminAction" method="ChangePassword">
+	             <result name="success">adminaccount.jsp</result>
+	             <result name="error">adminaccount.jsp</result>
+	             </action>
+	 
+	   
+	   <action name="forgotpassword" 
+	            class="com.sparity.shoppingcart.action.AdminAction" method="forgotPassword">
+	            <result name="success">adminlogin.jsp</result>
+	             <result name="error">adminlogin.jsp</result>
+	            </action>
+	   
+	   
+	   
+	     <action  name="homepage"
+	              class="com.sparity.shoppingcart.action.AdminAction" method="Home">
+	              <result name="success">productList.jsp</result>        
+	              </action>	
+	  
+	  <action  name="cancel"
+	              class="com.sparity.shoppingcart.action.AdminAction" method="Cancel">
+	              <result name="success">productList.jsp</result>        
+	              </action>
+	  
+	  
+	  
+	    <action name="logout"
+	             class="com.sparity.shoppingcart.action.AdminAction" method="Logout">
+	              <result name="success">adminlogin.jsp</result>
+	              </action>
+	
+	
+</package>
+ 
+</struts>

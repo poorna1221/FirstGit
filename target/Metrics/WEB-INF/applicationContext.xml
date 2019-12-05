@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xmlns:aop="http://www.springframework.org/schema/aop"
+     xmlns:tx="http://www.springframework.org/schema/tx"
+     xmlns:context="http://www.springframework.org/schema/context"
+     xsi:schemaLocation="http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context-3.0.xsd
+         http://www.springframework.org/schema/tx
+         http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+         http://www.springframework.org/schema/aop
+         http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+   <context:component-scan base-package="com.srinu"></context:component-scan>
+   
+   <context:property-placeholder location="classpath:jdbc.properties" />
+   
+   <tx:annotation-driven/>
+   
+   <!-- <bean id="propertyUtils" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	   <property name="locations">
+	   		<list>
+	   			<value>classpath:jdbc.properties</value>
+	   		</list>
+	   </property>
+   </bean> -->
+   
+   <bean id="dataSource" destroy-method="close" class="org.apache.commons.dbcp.BasicDataSource">
+	  <property name="driverClassName" value="${jdbc.driver.class.name}"/>
+	  <property name="url" value="${jdbc.url}"/>
+	  <property name="username" value="${jdbc.username}"/>
+	  <property name="password" value="${jdbc.password}"/>
+	  <property name="validationQuery" value="${jdbc.validationQuery}"></property>
+	  <property name="testOnBorrow" value="${jdbc.testOnBorrow}"></property>
+  </bean>
+  
+  <bean id="hibernateProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="properties">
+			<props>
+				<!-- The database specific dialect -->
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
+				<!-- auto create/update tables -->
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<!-- maximum "depth" for the outer join in case of single-ended associations one-to-one, many-to-one -->
+				<prop key="hibernate.max_fetch_depth">1</prop>
+				<!-- replace the keywords true and false with the literals 1 and 0 in the translated SQL -->
+				<prop key="hibernate.query.substitutions">true 1, false 0</prop>
+				<!-- enables use of JDBC2 batch updates -->
+				<prop key="hibernate.jdbc.batch_size">25</prop>
+				
+				<!-- properties to output SQL -->
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">false</prop>
+				<prop key="hibernate.generate_statistics">false</prop>
+				
+				<!-- Connection pool specific properties -->
+				<!-- http://www.informit.com/articles/article.aspx?p=353736&seqNum=4 -->
+				<prop key="hibernate.dbcp.maxActive">20</prop>
+				<prop key="hibernate.dbcp.maxIdle">20</prop>
+				<prop key="hibernate.dbcp.maxWait">-1</prop>
+				<prop key="hibernate.dbcp.whenExhaustedAction">1</prop>
+				<prop key="hibernate.dbcp.testOnBorrow">true</prop>
+				<prop key="hibernate.dbcp.testOnReturn">true</prop>
+				<prop key="hibernate.dbcp.validateQuery">SELECT 1+1</prop>
+				<prop key="hibernate.dbcp.ps.maxActive">10</prop>
+				<prop key="hibernate.dbcp.ps.maxIdle">10</prop>
+				<prop key="hibernate.dbcp.ps.maxWait">1000</prop>
+				<prop key="hibernate.dbcp.ps.whenExhaustedAction">1</prop>
+				
+				<!-- Second level cache configuration -->
+				<!-- <prop key="hibernate.cache.use_second_level_cache">true</prop>
+				<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.SingletonEhCacheProvider</prop>
+				<prop key="hibernate.cache.use_query_cache">false</prop> -->
+				
+			</props>
+		</property>
+	</bean>
+  
+  <!-- This class requires Hibernate 3.2 or later, with the Java Persistence API and the Hibernate Annotations add-on present. -->
+  <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+  	<property name="dataSource" ref="dataSource"></property>
+  	<property name="hibernateProperties">
+			<ref bean="hibernateProperties"/>
+	</property>	
+	<!-- using classpath scanning for autodetection of entity classes: -->
+  	 <property name="packagesToScan" value="com.srinu"/>
+  	<!-- <property name="annotatedClasses">
+  		<list>
+  			    <value>com.srinu.struts2.model.AlbumModel</value>
+				<value>com.srinu.struts2.model.BaseModel</value>
+				<value>com.srinu.struts2.model.BrandModel</value>
+				<value>com.srinu.struts2.model.CategoryModel</value>
+				<value>com.srinu.struts2.model.OrderDetailModel</value>
+				<value>com.srinu.struts2.model.PaymentModeModel</value>
+				<value>com.srinu.struts2.model.ProductColorModel</value>
+				<value>com.srinu.struts2.model.ProductModel</value>
+				<value>com.srinu.struts2.model.ProductTypeModel</value>
+				<value>com.srinu.struts2.model.ShippingAddressModel</value>
+				<value>com.srinu.struts2.model.ShoppingCartModel</value>
+				<value>com.srinu.struts2.model.TransactionModel</value>
+				<value>com.srinu.struts2.model.UserAccountModel</value>
+				<value>com.srinu.struts2.model.WhishListsModel</value>
+  		</list>
+  	</property> -->
+  </bean>
+  
+  <bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+  
+  <bean id="hibernateDaoSupport"
+		class="org.springframework.orm.hibernate3.support.HibernateDaoSupport"
+		abstract="true">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="serviceLocator" class="com.srinu.struts2.util.ServiceLocator" />
+  
+</beans>

@@ -12,8 +12,7 @@
   </properties>
      <profiles>
   	 <profile>
-            <id>default-tools.jar</id>
-            <activation>
+           <activation>
                 <property>
                     <name>java.vendor</name>
                     <value>Sun Microsystems Inc.</value>

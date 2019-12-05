@@ -9,7 +9,7 @@
 
 
 <interceptors>
-		<interceptor name="memberLoginValidate" class="com.sparity.shoppingcart.util.AuthenticationInterceptorAdmin" />
+		<interceptor name="memberLoginValidatess" class="com.sparity.shoppingcart.util.AuthenticationInterceptorAdmin" />
 			<interceptor-stack name="appDefaultStack">
 				<interceptor-ref name="defaultStack">
 					<param name="exception.logEnabled">true</param>
